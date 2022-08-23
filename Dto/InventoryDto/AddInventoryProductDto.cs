@@ -7,6 +7,8 @@ namespace Inventory_Management.Dto.InventoryDto
 {
     public class AddInventoryProductDto
     {
-        public List<int> InventoryId { get; set; }
+        public int InventoryId { get; set; }
+
+        public int ProductId { get; set; }
     }
 }

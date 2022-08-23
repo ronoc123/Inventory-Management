@@ -20,6 +20,7 @@ namespace Inventory_Management
             CreateMap<GetInventoryDto, Inventory>();
             CreateMap<AddInventoryDto, Inventory>();
             CreateMap<Inventory, AddInventoryDto>();
+            CreateMap<UpdateInventoryDto, GetInventoryDto>();
         }
     }
 }

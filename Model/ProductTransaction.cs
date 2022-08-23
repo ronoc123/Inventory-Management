@@ -7,6 +7,8 @@ namespace Inventory_Management.Model
 {
     public class ProductTransaction
     {
-        
+        public int Id { get; set; }
+
+        public ActivityClass Activity { get; set; }
     }
 }

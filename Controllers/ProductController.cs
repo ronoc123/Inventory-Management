@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Inventory_Management.Dto;
+using Inventory_Management.Dto.InventoryDto;
 using Inventory_Management.Dto.InventoryDto.ProductDto;
 using Inventory_Management.Dto.ProductDto;
 using Inventory_Management.Services;
@@ -49,16 +50,28 @@ namespace Inventory_Management.Controllers
             return Ok(response);
         }
 
-        // [HttpPut]
-        // public async Task<ActionResult<ServiceResponse<List<GetProductDto>>>> UpdateProduct()
-        // {
-
-        // }
+        [HttpPut]
+        public async Task<ActionResult<ServiceResponse<GetProductDto>>> UpdateProduct(UpdateProductDto updatedProduct)
+        {
+            var response = await _productService.UpdateProduct(updatedProduct);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
 
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<List<GetProductDto>>>> AddProduct(AddProductDto newProduct)
         {
             return Ok(await _productService.AddProduct(newProduct));
+        }
+
+        [HttpPost("inventory")]
+
+        public async Task<ActionResult<ServiceResponse<GetProductDto>>> AddInventoryProduct(AddInventoryProductDto newInventoryProduct)
+        {
+            return Ok(await _productService.AddInventoryProduct(newInventoryProduct));
         }
     }
 }

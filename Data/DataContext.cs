@@ -13,6 +13,7 @@ namespace Inventory_Management.Data
             
         }
 
+
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Inventory> Inventories { get; set; }

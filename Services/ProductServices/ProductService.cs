@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Inventory_Management.Data;
+using Inventory_Management.Dto;
+using Inventory_Management.Dto.InventoryDto;
 using Inventory_Management.Dto.InventoryDto.ProductDto;
 using Inventory_Management.Dto.ProductDto;
 using Microsoft.AspNetCore.Mvc;
@@ -26,24 +28,12 @@ namespace Inventory_Management.Services
         {
            var response = new ServiceResponse<List<GetProductDto>>();
             
-            
-
-
             Product product = _mapper.Map<Product>(newProduct);
-
-            Product testProduct = await _context.Products.FirstOrDefaultAsync(p => p.Name == product.Name);
-
-            if (testProduct == null)
-            {
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
+
             response.Data = await _context.Products.Select(p => _mapper.Map<GetProductDto>(p)).ToListAsync();
-            }
-            else 
-            {
-                response.Success = false;
-                response.Message = "There is Already a Product with this Name";
-            }
+
 
             return response;
 
@@ -76,7 +66,7 @@ namespace Inventory_Management.Services
         public async Task<ServiceResponse<List<GetProductDto>>> GetAllProducts()
         {
             var response = new ServiceResponse<List<GetProductDto>>();
-            var dbProduct = await _context.Products.ToListAsync();
+            var dbProduct = await _context.Products.Include(p => p.Inventories).ToListAsync();
 
             response.Data = dbProduct.Select(p => _mapper.Map<GetProductDto>(p)).ToList();
 
@@ -101,9 +91,80 @@ namespace Inventory_Management.Services
 
         }
 
-        public Task<ServiceResponse<List<GetProductDto>>> UpdateProduct()
+        public async Task<ServiceResponse<GetProductDto>> UpdateProduct(UpdateProductDto updatedProduct)
         {
-            throw new NotImplementedException();
+            var response = new ServiceResponse<GetProductDto>();
+
+            try
+            {
+                var product = await _context.Products.Include(p => p.Inventories).FirstOrDefaultAsync(p => p.Id == updatedProduct.Id);
+
+                if (product != null)
+                {
+                    product.Name = updatedProduct.Name;
+                    product.Quantity = updatedProduct.Quantity;
+                    product.Price = updatedProduct.Price;
+                    
+                    await _context.SaveChangesAsync();
+
+                    response.Data = _mapper.Map<GetProductDto>(product);
+                }
+                else 
+                {
+                    response.Success = false;
+                    response.Message = $"Product with id: {updatedProduct.Id} does not exists";
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+
+            return response;
         }
+
+        public async Task<ServiceResponse<GetProductDto>> AddInventoryProduct(AddInventoryProductDto newInventoryProduct)
+        {
+            var response = new ServiceResponse<GetProductDto>();
+
+            try
+            {
+
+            var product = await _context.Products
+                .Include(p => p.Inventories)
+                .FirstOrDefaultAsync(p => p.Id == newInventoryProduct.ProductId);
+
+                if (product == null)
+                {
+                    response.Success = false;
+                    response.Message = "Product Does Not Exist";
+                    return response;
+                }
+
+                var inventory = await _context.Inventories.FirstOrDefaultAsync(i => i.Id == newInventoryProduct.InventoryId);
+
+                if (inventory == null)
+                {
+                    response.Success = false;
+                    response.Message = "Inventory was not found.";
+                    return response;
+                }
+
+                product.Inventories.Add(inventory);
+                await _context.SaveChangesAsync();
+                response.Data = _mapper.Map<GetProductDto>(product);
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
     }
 }
