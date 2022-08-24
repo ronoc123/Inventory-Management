@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Inventory_Management.Model
+namespace Inventory_Management.Dto.TransactionsDto
 {
-    public class InventoryTransaction
+    public class GetInventoryTransactionDto
     {
         public int Id { get; set; }
-
-        public int InventoryId { get; set; }
-
-        public Inventory Inventory { get; set; }
+       
+        public int inventoryId { get; set; }
 
         public ActivityClass Activity { get; set; }
 
@@ -19,6 +17,6 @@ namespace Inventory_Management.Model
 
         public int QuantityAfter { get; set; }
 
-
+        public GetInventoryDto Inventory { get; set; }
     }
 }

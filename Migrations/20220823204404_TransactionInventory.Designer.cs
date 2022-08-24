@@ -4,6 +4,7 @@ using Inventory_Management.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inventory_Management.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220823204404_TransactionInventory")]
+    partial class TransactionInventory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,18 +58,16 @@ namespace Inventory_Management.Migrations
                     b.Property<int>("Activity")
                         .HasColumnType("int");
 
-                    b.Property<int>("InventoryId")
-                        .HasColumnType("int");
-
                     b.Property<int>("QuantityAfter")
                         .HasColumnType("int");
 
                     b.Property<int>("QuantityBefore")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("inventoryId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("InventoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("InventoryTransactions");
                 });
@@ -133,17 +133,6 @@ namespace Inventory_Management.Migrations
                     b.HasIndex("ProductsId");
 
                     b.ToTable("InventoryProduct");
-                });
-
-            modelBuilder.Entity("Inventory_Management.Model.InventoryTransaction", b =>
-                {
-                    b.HasOne("Inventory_Management.Model.Inventory", "Inventory")
-                        .WithMany()
-                        .HasForeignKey("InventoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Inventory");
                 });
 
             modelBuilder.Entity("InventoryProduct", b =>

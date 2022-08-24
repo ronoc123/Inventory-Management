@@ -7,6 +7,7 @@ using Inventory_Management.Dto;
 using Inventory_Management.Dto.InventoryDto;
 using Inventory_Management.Dto.InventoryDto.ProductDto;
 using Inventory_Management.Dto.ProductDto;
+using Inventory_Management.Dto.TransactionsDto;
 
 namespace Inventory_Management
 {
@@ -21,6 +22,12 @@ namespace Inventory_Management
             CreateMap<AddInventoryDto, Inventory>();
             CreateMap<Inventory, AddInventoryDto>();
             CreateMap<UpdateInventoryDto, GetInventoryDto>();
+            CreateMap< InventoryTransaction, AddInventoryTransactionDto>();
+            CreateMap< AddInventoryTransactionDto, InventoryTransaction>();
+
+            CreateMap<InventoryTransaction, GetInventoryTransactionDto>();
+            CreateMap<GetInventoryTransactionDto, InventoryTransaction>();
+
         }
     }
 }
