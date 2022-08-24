@@ -9,6 +9,16 @@ namespace Inventory_Management.Model
     {
         public int Id { get; set; }
 
+        public int ProductId { get; set; }
+
+        public Product Product { get; set; }
+
+        public List<Inventory> Inventories { get; set; }
+
         public ActivityClass Activity { get; set; }
+
+        public int QuantityBefore { get; set; }
+
+        public int QuantityAfter { get; set; }
     }
 }

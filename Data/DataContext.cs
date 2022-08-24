@@ -21,5 +21,7 @@ namespace Inventory_Management.Data
         public DbSet<User> Users { get; set; }
 
         public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
+
+        public DbSet<ProductTransaction> ProductTransactions { get; set; }
     }
 }

@@ -28,6 +28,10 @@ namespace Inventory_Management
             CreateMap<InventoryTransaction, GetInventoryTransactionDto>();
             CreateMap<GetInventoryTransactionDto, InventoryTransaction>();
 
+            CreateMap<GetProductTransactionDto, ProductTransaction>();
+            CreateMap<ProductTransaction, GetProductTransactionDto>();
+
+
         }
     }
 }

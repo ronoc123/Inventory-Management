@@ -47,11 +47,27 @@ namespace Inventory_Management.Services.InventoryTransactionService
 
 
             var inventory = await _context.Inventories.FirstOrDefaultAsync(i => i.Id == newInventoryTransaction.InventoryId);
-
             InventoryTransaction inventoryTransaction = _mapper.Map<InventoryTransaction>(newInventoryTransaction);
-            inventoryTransaction.Inventory = inventory;
-            inventoryTransaction.QuantityBefore = inventory.Quantity;
-            inventoryTransaction.QuantityAfter = inventory.Quantity + newInventoryTransaction.Quantity;
+
+            if (newInventoryTransaction.Activity == ActivityClass.Purchase)
+            {     
+                inventoryTransaction.Inventory = inventory;
+                inventoryTransaction.QuantityBefore = inventory.Quantity;
+                inventoryTransaction.QuantityAfter = inventory.Quantity + newInventoryTransaction.Quantity;
+            }
+            // else if (newInventoryTransaction.Activity == ActivityClass.Produce && inventory.Quantity >= newInventoryTransaction.Quantity)
+            // {
+            //     inventoryTransaction.Inventory = inventory;
+            //     inventoryTransaction.QuantityBefore = inventory.Quantity;
+            //     inventoryTransaction.QuantityAfter = inventory.Quantity - newInventoryTransaction.Quantity;
+            // }
+            else
+            {
+                response.Success = false;
+                response.Message = "Invalid Operations";
+                return response;
+            }
+
 
 
             _context.InventoryTransactions.Add(inventoryTransaction);
