@@ -37,15 +37,10 @@ namespace Inventory_Management.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductTransactionId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductTransactionId");
 
                     b.ToTable("Inventories");
                 });
@@ -77,56 +72,6 @@ namespace Inventory_Management.Migrations
                     b.ToTable("InventoryTransactions");
                 });
 
-            modelBuilder.Entity("Inventory_Management.Model.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Inventory_Management.Model.ProductTransaction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Activity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuantityAfter")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuantityBefore")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductTransactions");
-                });
-
             modelBuilder.Entity("Inventory_Management.Model.User", b =>
                 {
                     b.Property<int>("Id")
@@ -152,28 +97,6 @@ namespace Inventory_Management.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("InventoryProduct", b =>
-                {
-                    b.Property<int>("InventoriesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("InventoriesId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("InventoryProduct");
-                });
-
-            modelBuilder.Entity("Inventory_Management.Model.Inventory", b =>
-                {
-                    b.HasOne("Inventory_Management.Model.ProductTransaction", null)
-                        .WithMany("Inventories")
-                        .HasForeignKey("ProductTransactionId");
-                });
-
             modelBuilder.Entity("Inventory_Management.Model.InventoryTransaction", b =>
                 {
                     b.HasOne("Inventory_Management.Model.Inventory", "Inventory")
@@ -183,37 +106,6 @@ namespace Inventory_Management.Migrations
                         .IsRequired();
 
                     b.Navigation("Inventory");
-                });
-
-            modelBuilder.Entity("Inventory_Management.Model.ProductTransaction", b =>
-                {
-                    b.HasOne("Inventory_Management.Model.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("InventoryProduct", b =>
-                {
-                    b.HasOne("Inventory_Management.Model.Inventory", null)
-                        .WithMany()
-                        .HasForeignKey("InventoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Inventory_Management.Model.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Inventory_Management.Model.ProductTransaction", b =>
-                {
-                    b.Navigation("Inventories");
                 });
 #pragma warning restore 612, 618
         }

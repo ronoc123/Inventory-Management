@@ -10,5 +10,7 @@ namespace Inventory_Management.Dto.InventoryDto
         public int InventoryId { get; set; }
 
         public int ProductId { get; set; }
+
+        public int InventoryQuantity { get; set; }
     }
 }

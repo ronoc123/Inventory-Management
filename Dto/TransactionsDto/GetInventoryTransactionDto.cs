@@ -17,6 +17,5 @@ namespace Inventory_Management.Dto.TransactionsDto
 
         public int QuantityAfter { get; set; }
 
-        public GetInventoryDto Inventory { get; set; }
     }
 }

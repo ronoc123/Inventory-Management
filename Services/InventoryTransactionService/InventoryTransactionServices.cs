@@ -50,21 +50,31 @@ namespace Inventory_Management.Services.InventoryTransactionService
             InventoryTransaction inventoryTransaction = _mapper.Map<InventoryTransaction>(newInventoryTransaction);
 
             if (newInventoryTransaction.Activity == ActivityClass.Purchase)
-            {     
+            {    
+                if (inventory == null)
+                    {
+                        response.Success = false;
+                        response.Message = "This Inventory does not exist";
+                    }
+
                 inventoryTransaction.Inventory = inventory;
                 inventoryTransaction.QuantityBefore = inventory.Quantity;
                 inventoryTransaction.QuantityAfter = inventory.Quantity + newInventoryTransaction.Quantity;
+                inventory.Quantity = inventory.Quantity + newInventoryTransaction.Quantity;
+                await _context.SaveChangesAsync();
             }
-            // else if (newInventoryTransaction.Activity == ActivityClass.Produce && inventory.Quantity >= newInventoryTransaction.Quantity)
-            // {
-            //     inventoryTransaction.Inventory = inventory;
-            //     inventoryTransaction.QuantityBefore = inventory.Quantity;
-            //     inventoryTransaction.QuantityAfter = inventory.Quantity - newInventoryTransaction.Quantity;
-            // }
+            else if (newInventoryTransaction.Activity == ActivityClass.Sell && inventory.Quantity >= newInventoryTransaction.Quantity)
+            {
+                inventoryTransaction.Inventory = inventory;
+                inventoryTransaction.QuantityBefore = inventory.Quantity;
+                inventoryTransaction.QuantityAfter = inventory.Quantity - newInventoryTransaction.Quantity;
+                inventory.Quantity = inventory.Quantity - newInventoryTransaction.Quantity;
+                await _context.SaveChangesAsync();
+            }
             else
             {
                 response.Success = false;
-                response.Message = "Invalid Operations";
+                response.Message = "Not Enough Inventory Stock";
                 return response;
             }
 
@@ -72,12 +82,15 @@ namespace Inventory_Management.Services.InventoryTransactionService
 
             _context.InventoryTransactions.Add(inventoryTransaction);
             await _context.SaveChangesAsync();
+            
 
             response.Data = await _context.InventoryTransactions.Include(t => t.Inventory).Select(t => _mapper.Map<GetInventoryTransactionDto>(t)).ToListAsync();
 
 
             return response; 
         }
+
+
  
     }
 }

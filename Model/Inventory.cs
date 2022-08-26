@@ -15,7 +15,6 @@ namespace Inventory_Management.Model
 
         public int Price { get; set; }
         
-        public List<Product>? Products { get; set; }
 
     }
 }
