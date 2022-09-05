@@ -1,13 +1,57 @@
-body {
+*,
+::after,
+::before {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: var(--ff-primary);
+  color: var(--clr-grey-1);
+  line-height: 1.5;
+  font-size: 0.875rem;
+}
+
+ul {
+  list-style-type: none;
+}
+button {
+  font-family: var(--ff-primary);
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+.logo {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+:root {
+  --clr-primary-1: #ff810a;
+  --clr-primary-2: #ff8b1f;
+  --clr-primary-3: #ff9633;
+  --clr-primary-4: #ffa047;
+  --clr-primary-5: #ffab5c;
+  --clr-primary-6: #ffb570;
+  --clr-primary-7: #ffc085;
+  --clr-primary-8: #ffc085;
+  --clr-primary-9: #ffead6;
+
+  /* primary/main color */
+  --clr-darkblue: #040d33;
+  --clr-darkgrey: #2c324a;
+  --clr-background-1: #f0eff4;
+  --clr-white: #fff;
+  --clr-black: #000000;
+  --ff-primary: "Roboto", sans-serif;
+  --ff-secondary: "Open Sans", sans-serif;
+  --transition: all 0.3s linear;
+  --spacing: 0.25rem;
+  --radius: 0.5rem;
+  --light-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --dark-shadow: 0 5px 15px rgba(0, 0, 0, 0.13);
+  --max-width: 1170px;
+  --bodyFont: Monospace;
 }

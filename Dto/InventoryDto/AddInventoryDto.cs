@@ -11,6 +11,5 @@ namespace Inventory_Management.Dto.InventoryDto
 
         public int Quantity { get; set; }
 
-        public int Price { get; set; }
     }
 }

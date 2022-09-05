@@ -11,11 +11,15 @@ namespace Inventory_Management.Dto.TransactionsDto
        
         public int inventoryId { get; set; }
 
+        public Inventory Inventory { get; set; }
+
         public ActivityClass Activity { get; set; }
 
         public int QuantityBefore { get; set; }
 
         public int QuantityAfter { get; set; }
+
+        public DateTime Date { get; set; }
 
     }
 }

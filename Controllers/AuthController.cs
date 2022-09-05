@@ -42,10 +42,10 @@ namespace Inventory_Management.Controllers
 
             if (response.Success)
             {
-                return BadRequest(response);
+                return Ok(response);
             }
 
-            return Ok(response);
+                return BadRequest(response);
         }
     }
 }

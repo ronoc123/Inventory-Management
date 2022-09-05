@@ -11,10 +11,7 @@ namespace Inventory_Management.Model
 
         public string Name { get; set; } = string.Empty;
 
-        public int Quantity { get; set; }
-
-        public int Price { get; set; }
-        
+        public int Quantity { get; set; }        
 
     }
 }

@@ -19,7 +19,7 @@ namespace Inventory_Management.Services.InventoryManagement
         public InventoryService(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
-        _context = context;
+            _context = context;
         }
         public async Task<ServiceResponse<List<GetInventoryDto>>> AddInventory(AddInventoryDto newInventory)
         {
@@ -88,7 +88,7 @@ namespace Inventory_Management.Services.InventoryManagement
             {
                 inventory.Name = updatedInventory.Name;
                 inventory.Quantity = updatedInventory.Quantity;
-                inventory.Price = updatedInventory.Price;
+
 
                 await _context.SaveChangesAsync();
 

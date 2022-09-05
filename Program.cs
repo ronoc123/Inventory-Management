@@ -14,6 +14,8 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(build
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddCors();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -47,6 +49,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors(o => {
+    o
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader();
+    }
+    );
 
 app.UseHttpsRedirection();
 

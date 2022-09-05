@@ -22,7 +22,7 @@ namespace Inventory_Management.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<List<GetInventoryTransactionDto>>>> Get()
         {
-            return Ok( await _inventoryTransactionService.GetAllInventoryTransactions());
+            return Ok(await _inventoryTransactionService.GetAllInventoryTransactions());
         }
 
         [HttpGet("{id}")]

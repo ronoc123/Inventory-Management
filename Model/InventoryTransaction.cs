@@ -11,6 +11,8 @@ namespace Inventory_Management.Model
 
         public int InventoryId { get; set; }
 
+        public decimal Price { get; set; }
+
         public Inventory Inventory { get; set; }
 
         public ActivityClass Activity { get; set; }
@@ -18,6 +20,8 @@ namespace Inventory_Management.Model
         public int QuantityBefore { get; set; }
 
         public int QuantityAfter { get; set; }
+
+        public DateTime Date { get; set; }
 
 
     }
