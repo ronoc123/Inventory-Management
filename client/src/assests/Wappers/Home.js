@@ -5,10 +5,22 @@ const Wrapper = styled.div`
   justify-content: center;
   min-height: calc(100vh - 7rem);
   grid-template-columns: 1fr;
-  grid-template-rows: 10rem 30rem 50rem 6rem;
+  grid-template-rows: 18rem 30rem 50rem 6rem;
   background: var(--clr-white);
   .footer {
-    background: #4c4b61;
+    background: #242323;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .link {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .main-title {
+    font-size: 1.4rem;
+    text-align: center;
   }
   .title {
     font-size: 3rem;
@@ -56,25 +68,29 @@ const Wrapper = styled.div`
     padding: 1rem;
     background: var(--clr-primary-1);
   }
-  .earth {
-    display: grid;
-    background-image: url(".Image.jpg");
-
-    /* background: var(--clr-darkblue); */
-    opacity: 0.92;
-    height: 50rem;
+  .pic {
+    height: 100%;
     width: 100%;
-    padding-top: 5rem;
+    opacity: 0.8;
   }
+
+  .background {
+    background: linear-gradient(to left, #009ffd, #2a2a72);
+  }
+
   .earth-container {
     display: grid;
     width: 80vw;
     text-align: center;
-    padding-top: 10rem;
+    height: 20rem;
     justify-self: center;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     color: white;
+    position: absolute;
+    z-index: 2;
+    top: 73rem;
+    font-size: 2rem;
   }
 `;
 

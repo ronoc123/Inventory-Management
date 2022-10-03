@@ -7,7 +7,11 @@ import { useAppContext } from "../context/appContext";
 import Sidebar from "./Sidebar";
 
 const Navbar = () => {
-  const { openSidebar, closeSidebar, navSidebar } = useAppContext();
+  const { openSidebar, closeSidebar, navSidebar, logout } = useAppContext();
+
+  const logoutUser = () => {
+    logout();
+  };
 
   return (
     <Wrapper>
@@ -34,7 +38,9 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="logout-container">
-        <button className="logout-btn big-screen">Logout</button>
+        <button className="logout-btn big-screen" onClick={logoutUser}>
+          Logout
+        </button>
         <button className="small-screen" onClick={openSidebar}>
           <FaBars />
         </button>

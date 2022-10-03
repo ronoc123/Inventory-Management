@@ -32,7 +32,7 @@ const Transaction = () => {
         <div className="transaction-container">
           <div className="title">
             <div className="heading">Date</div>
-            <div className="heading">Price</div>
+            <div className="heading">Product</div>
             <div className="heading">Type</div>
             <div className="heading">Quantity Before</div>
             <div className="heading">Quantity After</div>

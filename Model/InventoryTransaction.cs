@@ -21,7 +21,7 @@ namespace Inventory_Management.Model
 
         public int QuantityAfter { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Today;
 
 
     }

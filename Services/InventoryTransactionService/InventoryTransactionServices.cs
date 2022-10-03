@@ -61,7 +61,7 @@ namespace Inventory_Management.Services.InventoryTransactionService
                 inventoryTransaction.QuantityBefore = inventory.Quantity;
                 inventoryTransaction.QuantityAfter = inventory.Quantity + newInventoryTransaction.Quantity;
                 inventory.Quantity = inventory.Quantity + newInventoryTransaction.Quantity;
-                // inventory.Date = DateTime.Now;
+    
                 await _context.SaveChangesAsync();
             }
             else if (newInventoryTransaction.Activity == ActivityClass.Sell && inventory.Quantity >= newInventoryTransaction.Quantity)

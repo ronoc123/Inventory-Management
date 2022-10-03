@@ -20,6 +20,8 @@ import {
   FILTER_INVENTORIES,
   SIDEBAR_CLOSED,
   SIDEBAR_OPEN,
+  LOGOUT,
+  NOT_ENOUGH_PRODUCT,
 } from "./action";
 
 const reducer = (state, action) => {
@@ -34,6 +36,7 @@ const reducer = (state, action) => {
   if (action.type === CLEAR_ALERT) {
     return {
       ...state,
+      showAlert: false,
       alertText: "",
       alertType: "",
     };
@@ -48,7 +51,8 @@ const reducer = (state, action) => {
       ...state,
       token: action.payload.res.data,
       user: action.payload.user,
-      alertText: action.payload.res.message,
+      showAlert: true,
+      alertText: action.payload.alertText,
       isLoading: false,
     };
   }
@@ -57,13 +61,15 @@ const reducer = (state, action) => {
     return {
       ...state,
       alertText: action.payload.msg,
+      showAlert: true,
     };
   }
 
   if (action.type === REGISTER_USER_SUCCESS) {
     return {
       ...state,
-      alertText: action.payload,
+      alertText: action.payload.alertText,
+      showAlert: true,
       isLoading: false,
     };
   }
@@ -125,6 +131,7 @@ const reducer = (state, action) => {
       isLoading: false,
       inventoryTransactions: action.payload.data,
       singleInventory: [],
+      alertText: "Transaction complete!",
     };
   }
 
@@ -157,6 +164,21 @@ const reducer = (state, action) => {
     return {
       ...state,
       navSidebar: false,
+    };
+  }
+
+  if (action.type === LOGOUT) {
+    return {
+      ...initialState,
+      user: null,
+      token: null,
+    };
+  }
+  if (action.type === NOT_ENOUGH_PRODUCT) {
+    return {
+      ...state,
+      alertText: action.payload,
+      showAlert: true,
     };
   }
 

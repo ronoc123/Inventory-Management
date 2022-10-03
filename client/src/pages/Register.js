@@ -10,15 +10,16 @@ import { useNavigate } from "react-router-dom";
 const initialState = {
   name: "",
   password: "",
-  isMember: true,
-  showAlert: false,
+  email: "",
+  isMember: false,
+  // showAlert: false,
 };
 
 export const Register = () => {
   const [values, setValues] = useState(initialState);
 
   const navigate = useNavigate();
-  const { displayAlert, setupUser, user } = useAppContext();
+  const { displayAlert, setupUser, user, showAlert } = useAppContext();
 
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
@@ -27,15 +28,15 @@ export const Register = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const { name, password, isMember } = values;
+    const { name, password, isMember, email } = values;
 
-    if (!password || (!isMember && !name)) {
+    if (!name || !password || (isMember && !email)) {
       displayAlert();
       return;
     }
 
     const currentUser = { name, password };
-    if (isMember) {
+    if (isMember === false) {
       setupUser({
         currentUser,
         endPoint: "login",
@@ -48,6 +49,18 @@ export const Register = () => {
         alertText: "Registering User...",
       });
     }
+  };
+  const loginDemo = () => {
+    let currentUser = {
+      name: "Demo User",
+      password: "123456",
+    };
+
+    setupUser({
+      currentUser: currentUser,
+      endPoint: "login",
+      alertText: "Logging in User...",
+    });
   };
 
   const handleChange = (e) => {
@@ -64,21 +77,44 @@ export const Register = () => {
 
   return (
     <Wrapper>
+      <div className="demo-container">
+        <button onClick={loginDemo} className="demo-btn">
+          Demo User
+        </button>
+      </div>
       <form className="form" onSubmit={onSubmit}>
-        <div>PontexIM</div>
+        <h1>PontexIM</h1>
+        {showAlert && <Alert />}
         <FormRow
           type="name"
           name="name"
           value={values.name}
           handleChange={handleChange}
         />
+        {values.isMember && (
+          <FormRow
+            type="email"
+            name="email"
+            value={values.email}
+            handleChange={handleChange}
+          />
+        )}
         <FormRow
           type="password"
           name="password"
           value={values.password}
           handleChange={handleChange}
         />
-        <button type="submit">Login</button>
+
+        <button type="submit" className="submit-btn">
+          {values.isMember ? "Register" : "Login"}
+        </button>
+        <p>
+          {values.isMember ? "Already a member?" : "Not a memeber yet?"}{" "}
+          <button onClick={toggleMember} type="button" className="toggle-btn">
+            {values.isMember ? "Login" : "Register"}
+          </button>
+        </p>
       </form>
     </Wrapper>
   );

@@ -24,6 +24,8 @@ import {
   FILTER_INVENTORIES,
   SIDEBAR_OPEN,
   SIDEBAR_CLOSED,
+  LOGOUT,
+  NOT_ENOUGH_PRODUCT,
 } from "./action";
 
 const token = localStorage.getItem("token");
@@ -37,6 +39,7 @@ const initialState = {
   inventoryTransactions: [],
   alertText: "",
   alertType: "",
+  showAlert: false,
   singleInventory: [],
   searchInventory: [],
   navSidebar: false,
@@ -58,11 +61,14 @@ const AppProvider = ({ children }) => {
   };
 
   const clearAlert = () => {
-    dispatch({ type: CLEAR_ALERT });
+    setTimeout(() => {
+      dispatch({ type: CLEAR_ALERT });
+    }, 2000);
   };
 
   const displayAlert = () => {
     dispatch({ type: DISPLAY_ALERT });
+
     clearAlert();
   };
 
@@ -77,7 +83,11 @@ const AppProvider = ({ children }) => {
       if (endPoint === "login") {
         dispatch({
           type: SETUP_USER_SUCCESS,
-          payload: { res: response.data, user: currentUser.name },
+          payload: {
+            res: response.data,
+            user: currentUser.name,
+            alertText: alertText,
+          },
         });
         console.log(response.data.data, currentUser);
 
@@ -86,14 +96,18 @@ const AppProvider = ({ children }) => {
           user: currentUser.name,
         });
       } else if (endPoint === "Register") {
-        dispatch({ type: REGISTER_USER_SUCCESS, payload: "User Created" });
+        dispatch({
+          type: REGISTER_USER_SUCCESS,
+          payload: "User Created",
+          alertText,
+        });
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message);
 
       dispatch({
         type: SETUP_USER_ERROR,
-        payload: { msg: error.response.msg },
+        payload: { msg: error.response.data.message },
       });
     }
     clearAlert();
@@ -133,21 +147,29 @@ const AppProvider = ({ children }) => {
     }
   };
 
-  const addTransaction = async (id, price, quantity, activity) => {
+  const addTransaction = async (id, quantity, activity) => {
     dispatch({ type: ADD_TRANSACTION_BEGIN });
 
     try {
       const { data } = await axios.post("/api/InventoryTransaction", {
         inventoryId: id,
         activity,
-        price,
         quantity,
       });
 
+      if (data.message === "Not Enough Inventory Stock") {
+        dispatch({ type: NOT_ENOUGH_PRODUCT, payload: data.message });
+        clearAlert();
+        return;
+      }
+      displayAlert();
       dispatch({ type: ADD_TRANSACTION_SUCCESS, payload: data });
     } catch (error) {
       console.log(error);
     }
+    setTimeout(() => {
+      clearAlert();
+    }, 2000);
   };
 
   const filterInventories = (text) => {
@@ -161,6 +183,24 @@ const AppProvider = ({ children }) => {
     dispatch({ type: SIDEBAR_CLOSED });
   };
 
+  const logout = () => {
+    dispatch({ type: LOGOUT });
+    removeUserFromLocalStorage();
+  };
+
+  const addInventory = async ({ name, quantity }) => {
+    await axios.post("/api/inventory", {
+      name,
+      quantity,
+    });
+    fetchInventory();
+  };
+
+  const deleteInventory = async (id) => {
+    await axios.delete(`/api/inventory/${id}`);
+    fetchInventory();
+  };
+
   useEffect(() => {
     fetchInventory();
     fetchTransaction();
@@ -170,14 +210,18 @@ const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         ...state,
+        logout,
         setupUser,
         displayAlert,
         fetchTransaction,
+        fetchInventory,
         fetchSingleInventory,
         addTransaction,
         filterInventories,
         openSidebar,
         closeSidebar,
+        addInventory,
+        deleteInventory,
       }}
     >
       {children}

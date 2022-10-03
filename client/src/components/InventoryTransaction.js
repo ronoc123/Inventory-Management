@@ -3,11 +3,12 @@ const InventoryTransaction = ({
   quantityBefore,
   quantityAfter,
   date,
+  inventory: { name },
 }) => {
   return (
     <div className="transaction">
-      <div>{date}</div>
-      <div>Price</div>
+      <div>{date.substring(0, 10)}</div>
+      <div>{name}</div>
       <div>{activity}</div>
       <div>{quantityBefore}</div>
       <div>{quantityAfter}</div>
