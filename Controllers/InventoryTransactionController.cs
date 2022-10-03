@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Inventory_Management.Dto.TransactionsDto;
+using Microsoft.AspNetCore.Authorization;
 using Inventory_Management.Services.InventoryTransactionService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory_Management.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class InventoryTransactionController : ControllerBase

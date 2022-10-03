@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Inventory_Management.Dto;
 using Inventory_Management.Dto.InventoryDto;
+using Microsoft.AspNetCore.Authorization;
+
 using Inventory_Management.Services.InventoryManagement;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory_Management.Controllers
-{
-
+{   
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class InventoryController : Controller

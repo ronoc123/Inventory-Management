@@ -50,6 +50,12 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const authFetch = axios.create({
+    headers: {
+      Authorization: `Bearer ${state.token}`,
+    },
+  });
+
   const addUserToLocalStorage = ({ user, token }) => {
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("token", JSON.stringify(token));
@@ -117,7 +123,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: GET_INVENTORY_BEGIN });
 
     try {
-      const { data } = await axios(`/api/Inventory/GetAll`);
+      const { data } = await authFetch(`/api/Inventory/GetAll`);
       dispatch({ type: GET_INVENTORY_SUCCESS, payload: data });
     } catch (error) {
       console.log(error);
@@ -127,7 +133,7 @@ const AppProvider = ({ children }) => {
   const fetchTransaction = async () => {
     dispatch({ type: GET_TRANSACTION_BEGIN });
     try {
-      const { data } = await axios("/api/InventoryTransaction/GetAll");
+      const { data } = await authFetch("/api/InventoryTransaction/GetAll");
 
       dispatch({ type: GET_TRANSACTION_SUCCESS, payload: data });
     } catch (error) {
@@ -139,7 +145,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: GET_SINGLE_INVENTORY_BEGIN });
 
     try {
-      const { data } = await axios(`/api/Inventory/${id}`);
+      const { data } = await authFetch(`/api/Inventory/${id}`);
 
       dispatch({ type: GET_SINGLE_INVENTORY_SUCCESS, payload: data });
     } catch (error) {
@@ -151,7 +157,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: ADD_TRANSACTION_BEGIN });
 
     try {
-      const { data } = await axios.post("/api/InventoryTransaction", {
+      const { data } = await authFetch.post("/api/InventoryTransaction", {
         inventoryId: id,
         activity,
         quantity,
@@ -189,7 +195,7 @@ const AppProvider = ({ children }) => {
   };
 
   const addInventory = async ({ name, quantity }) => {
-    await axios.post("/api/inventory", {
+    await authFetch.post("/api/inventory", {
       name,
       quantity,
     });
@@ -197,7 +203,7 @@ const AppProvider = ({ children }) => {
   };
 
   const deleteInventory = async (id) => {
-    await axios.delete(`/api/inventory/${id}`);
+    await authFetch.delete(`/api/inventory/${id}`);
     fetchInventory();
   };
 
